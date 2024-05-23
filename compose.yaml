@@ -1,0 +1,114 @@
+# Cada bloco abaixo corresponde a um container, e cada container tem suas configurações próprias.
+# São dois containers para as bases de dados e tres containers para os serviços (back-end)
+
+services:
+  mysql: # Define o nome do serviço/container (chamado mysql)
+    image: mysql:8.0 # Define a imagem que vai ser usada para esse container -> imagem oficial do MySQL na versão 8.0
+    environment: # Definir as variaveis de ambiente usadas nesse serviço
+      MYSQL_ROOT_PASSWORD: root # MYSQL_ROOT_PASSWORD = Senha da base de dados
+      MYSQL_DATABASE: ams_user # MYSQL_DATABASE      = Nome da base de dados
+    restart: always # Reinicia o container sempre que ele falhar por algum motivo
+    ports: # Explicação das portas no fim deste arquivo
+      - "3306:3306" #
+    deploy: # Definir as configurações de deploy
+      resources: # Definir os recursos usados para este serviço
+        limits: #
+          cpus: "0.2" # Limitar a CPU em 20%
+          memory: "0.3GB" # Limitar a memória em 0.3GB
+    volumes: # Usado para mapear um volume (arquivo) para dentro do container. No caso, ./db_volume.
+      - ./db_volume:/docker-entrypoint-initdb.d
+
+  mysql2:
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: ams_task
+    restart: always
+    ports:
+      - "3307:3306"
+    deploy:
+      resources:
+        limits:
+          cpus: "0.2"
+          memory: "0.3GB"
+    volumes:
+      - ./db_volume2:/docker-entrypoint-initdb.d
+
+  back: # back é o nome dado ao container do serviço orquestrador
+    build: ./servicoOrquestrador
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      PORT: 3000 # Porta definida para rodar o servidor express
+      JWT_SECRET_MD5: senhaSecretaJWT
+    volumes:
+      - ./servicoOrquestrador:/app # É passado toda a pasta ./servicoOrquestrador para a criação desse serviço
+      - /app/node_modules # Tanto o ./servicoOrquestrador e o ./node_modules serão passados para dentro do container
+    deploy:
+      resources:
+        limits:
+          cpus: "0.5"
+          memory: "0.5GB"
+
+  back2:
+    build: ./servicoUser
+    restart: unless-stopped
+    ports:
+      - "3001:3000"
+    environment:
+      PORT: 3000 # Porta definida para rodar o servidor express
+      DB_HOST: mysql # o HOST passa a ser 'mysql', que é o serviço criado e configurado acima
+      DB_USER: root
+      DB_PASSWORD: root
+      DB_NAME: ams_user
+      JWT_SECRET_MD5: senhaSecretaJWT
+    depends_on: # depends_on indica que esse serviço so será inicializado depois de 'mysql'
+      - mysql # 'mysql' é o nome do serviço de base de dados criado e configurado acima
+    volumes:
+      - ./servicoUser:/app
+      - /app/node_modules
+    deploy:
+      resources:
+        limits:
+          cpus: "0.5"
+          memory: "0.5GB"
+
+  back3:
+    build: ./servicoTask
+    restart: unless-stopped
+    ports:
+      - "3002:3000"
+    environment:
+      PORT: 3000 # Porta definida para rodar o servidor express
+      DB_HOST: mysql2 # o HOST passa a ser 'mysql2', que é o serviço criado e configurado acima
+      DB_USER: root
+      DB_PASSWORD: root
+      DB_NAME: ams_task
+    depends_on: # depends_on indica que esse serviço so será inicializado depois de 'mysql2'
+      - mysql2 # 'mysql' é o nome do serviço de base de dados criado e configurado acima
+    volumes:
+      - ./servicoTask:/app
+      - /app/node_modules
+    deploy:
+      resources:
+        limits:
+          cpus: "0.5"
+          memory: "0.5GB"
+# O Dockerfile dentro de cada serviço é executado sempre que o serviço é inicializado no docker
+
+# Essa configuração significa que a porta 3000 do contêiner está sendo mapeada para a porta 3001 do host
+# Ou seja, ========> para acessar esse serviço fora do container, usamos a porta 3001 <========
+# A porta da direita sempre será a porta do container. A porta da esquerda mapeia a porta do container.
+# ports:
+# - "3001:3000"
+
+# Em conclusao, todos os containers tem a mesma porta dentro do docker, o que muda é a porta que é
+# usada para acessar o container fora do docker.
+
+# Para acessar o back2 DENTRO do container (a partir de um serviço, como o orquestrador), usa http://back2:3000/test1
+# Para acessar o back2 FORA do container (a partir do navegador ou insomnia), usa http://back2:3001/test1
+# DENTRO do docker TODOS os serviços são acessados pela porta 3000, o que muda é o back2 ou back3 antes da porta (dominio)
+
+# Uns serviços estao configurados como `restart: unless-stopped`, outros como `restart: always`
+# A diferença entre `restart: unless-stopped` e `restart: always` é que o primeiro reinicia o contêiner automaticamente após parar, a menos que seja explicitamente parado pelo usuário, enquanto o segundo sempre reinicia o contêiner, independentemente de ter sido parado manualmente ou não.

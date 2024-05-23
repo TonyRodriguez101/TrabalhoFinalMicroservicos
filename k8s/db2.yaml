@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mysql2-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mysql2
+  template:
+    metadata:
+      labels:
+        app: mysql2
+    spec:
+      containers:
+        - name: mysql2-container
+          image: needvacations101/mysql2-container:latest
+          env:
+            - name: MYSQL_ROOT_PASSWORD
+              value: "root"
+            - name: MYSQL_DATABASE
+              value: "ams_task"
+          ports:
+            - containerPort: 3306
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mysql2-service
+spec:
+  type: ClusterIP
+  selector:
+    app: mysql2
+  ports:
+    - protocol: TCP
+      port: 3307
+      targetPort: 3306
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: orquestrador-service
+spec:
+  selector:
+    app: orquestrador
+  ports:
+    - protocol: TCP
+      port: 3000
+      targetPort: 3000

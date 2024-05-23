@@ -1,0 +1,120 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: orquestrador-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: orquestrador
+  template:
+    metadata:
+      labels:
+        app: orquestrador
+    spec:
+      containers:
+        - name: orquestrador-container
+          image: needvacations101/microservico1:latest
+          ports:
+            - containerPort: 3000
+          env: #necesario porque el codigo de index.ts recibe el puerto como variable ambiente
+            - name: PORT
+              value: "3000"
+            - name: JWT_SECRET_MD5
+              value: senhaSecretaJWT
+            - name: DOMINIO2
+              value: user-service
+            - name: DOMINIO1
+              value: task-service
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: user-service
+spec:
+  selector:
+    app: user
+  ports:
+    - protocol: TCP
+      port: 3000
+      targetPort: 3000
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: user-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: user
+  template:
+    metadata:
+      labels:
+        app: user
+    spec:
+      containers:
+        - name: user-container
+          image: needvacations101/microservico2:latest
+          ports:
+            - containerPort: 3000
+          env:
+            - name: PORT
+              value: "3000"
+            - name: DB_PASSWORD
+              value: root
+            - name: DB_NAME
+              value: ams_user
+            - name: JWT_SECRET_MD5
+              value: senhaSecretaJWT
+            - name: DB_USER
+              value: root
+            - name: DB_HOST
+              value: mysql-service
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: task-service
+spec:
+  selector:
+    app: task
+  ports:
+    - protocol: TCP
+      port: 3000
+      targetPort: 3000
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: task-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: task
+  template:
+    metadata:
+      labels:
+        app: task
+    spec:
+      containers:
+        - name: task-container
+          image: needvacations101/microservico3:latest
+          ports:
+            - containerPort: 3000
+          env:
+            - name: PORT
+              value: "3000"
+            - name: DB_PASSWORD
+              value: root
+            - name: DB_NAME
+              value: ams_task
+            - name: JWT_SECRET_MD5
+              value: senhaSecretaJWT
+            - name: DB_USER
+              value: root
+            - name: DB_HOST
+              value: mysql2-service
+            - name: DB_PORT
+              value: "3307"

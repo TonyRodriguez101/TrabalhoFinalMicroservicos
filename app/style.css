@@ -1,0 +1,316 @@
+.container-fluid {
+    padding: 0;
+}
+.container-fluid .row {
+    margin: 0;
+}
+.container{
+    margin-bottom: 50px;
+}
+/* Navbar */
+.navbar  {
+    border-bottom: 1px solid #333;
+    margin-bottom: 20px;
+    font-size: 20px;
+}
+
+.navbar-nav {
+    margin: auto;
+}
+
+.navbar-brand {
+    font-weight: bold;
+    margin-left: 45px;
+    font-size: 25px;
+    color: #0c0573;
+}
+
+.navbar-light .navbar-nav a.nav-link {
+    color: #333;
+    letter-spacing: 1px;
+}
+
+/* dashboard */
+.dashboard {
+    padding: 0;
+    width: 100%;
+    display: block;
+}
+
+.dashboard h4 {
+    font-size: 20px;
+}
+
+.dashboard span {
+    font-size: 40px;
+    display: block;
+    width: 100%;
+}
+
+.dashboard-box {
+    float: left;
+    background-color: #DFDFDF;
+    color: #FFF;
+    padding: 20px;
+    box-sizing: border-box;
+    height: 130px;
+    width: 32%;
+    text-align: center;
+}
+
+.dashboard-box:nth-child(2) {
+    margin-left: 1.5%;
+    margin-right: 1.5%;
+}
+
+#dashboard-lastdays {
+    background-color: #1478e3;
+}
+
+#dashboard-done {
+    background-color: #0d6e04;
+}
+
+#dashboard-doing {
+    background-color: #730505;
+}
+
+/* Botão de adicionar */
+#add-link {
+    text-decoration: none;
+    margin-top:10px;
+}
+
+.add-div {
+    margin-top:10px;
+    background-color: #3476e2;
+    cursor: pointer;
+    display: inline-block;
+    color: #FFF;
+    padding: 8px;
+    border-radius: 5px;
+    margin-right: 25px;
+}
+
+.fas.fa-plus {
+    color: #FFF;
+    margin-right: 10px;
+    margin-left: 5px;
+}
+
+/* Search */
+
+.fas.fa-search {
+    position: absolute;
+    top: 12px;
+    right: 26px;
+    cursor: pointer;
+}
+
+.search-div {
+    padding: 0;
+    margin-top: 15px;
+    margin-bottom: 15px;
+    display: inline-block;
+}
+
+/* Lista de tarefas */
+.editable-text {
+    cursor: pointer;
+    position: relative;
+}
+
+.editable-text:hover::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -2px;
+    width: 100%;
+    height: 2px;
+    background-color: #000; /* Cor da linha */
+}
+
+
+.list-div {
+    padding: 0;
+}
+
+.task-list {
+    padding-left: 0;
+}
+
+.task-item {
+    list-style: none;
+    font-size: 20px;
+    height: 50px;
+    padding: 0 15px;
+    padding-top: 10px;
+    border-bottom: 1px dashed #CCC;
+}
+
+.task-item.done {
+    background-color: #d5f5e4
+}  
+
+.fas.fa-trash {
+    color: #db1e47;
+    cursor: pointer;
+    margin: 5px;
+    font-size: 20px;
+    float: right;
+}
+
+.fas.fa-edit {
+    color: #13c43f;
+    cursor: pointer;
+    margin: 5px;
+    font-size: 20px;
+    float: right;
+}
+
+.fa-check,
+.fa-minus {
+    color: #CCC;
+    cursor: pointer;
+    margin: 5px;
+    font-size: 20px;
+    float: right;
+}
+
+.done .fas.fa-check,
+.done .fas.fa-minus{
+    color: #3476e2;
+}
+
+/* Rodapé */
+footer {
+    background-color: #333;
+    height: 300px;
+    border-top: 2px solid #202020;
+}
+
+footer p {
+    color: #f5f5f5;
+    text-align: center;
+    top: 50%;
+    position: relative;
+}
+
+/* Messages */
+
+ul.messages {
+    padding: 0;
+}
+
+ul.messages li {
+    list-style: none;
+}
+
+/* Paginação */
+.pagination {
+    margin-bottom: 20px;
+}
+
+.step-links {
+    position: relative;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.step-links .current {
+    margin-left: 5px;
+    margin-right: 5px;
+}
+
+/* Login */
+.auth-card {
+    margin-bottom: 30px;
+}
+
+.change-form-p {
+    margin-top: 30px;
+    text-align: center;
+}
+
+/*Add Task*/
+.taskFormulario input,
+.taskFormulario textarea{
+    width: 100%;
+}
+.btn-success{
+    margin: 5px;
+}
+
+/* Estilo para o contêiner principal de tasks*/
+.tarefas {
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    margin: 20px auto;
+    max-width: 800px;
+}
+
+/* Estilo para o título da tarefa */
+.taskTitulo {
+    color:  #3476e2;;
+    margin-bottom: 10px;
+
+}
+
+/* Estilo para a descrição da tarefa */
+.tarefas p {
+    font-size: 18px;
+    color: #666;
+    line-height: 1.5;
+}
+
+.tarefas span {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.tarefas h1,
+.tarefas p {
+    margin-bottom: 15px;
+}
+
+.loginFormulario input,
+.loginFormulario button{
+    width: 100%;
+}
+
+.container {
+    margin-top: 50px;
+}
+
+.form-container {
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    max-width: 400px;
+    margin: auto;
+}
+
+.form-container h1 {
+    color: #3476e2;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.form-label {
+    font-weight: bold;
+}
+
+.form-control {
+    margin-bottom: 15px;
+}
+
+.btn-primary {
+    width: 100%;
+}
+
+.signup-link {
+    text-align: center;
+}
