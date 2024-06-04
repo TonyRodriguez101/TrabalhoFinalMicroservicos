@@ -1,5 +1,9 @@
 Requerimientos:
 
+Docker Desktop
+kubectl 
+
+
 Codigos para Ejecucion:
 
 minikube start
