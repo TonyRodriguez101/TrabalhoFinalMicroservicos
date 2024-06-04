@@ -1,6 +1,7 @@
 Requerimientos:
 
 Docker Desktop
+
 kubectl 
 
 
